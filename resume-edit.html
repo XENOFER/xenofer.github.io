@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edit résumé — Manik Das (XENOFER)</title>
+<meta name="description" content="Edit the LaTeX source of the résumé and download it." />
+<meta name="theme-color" content="#07100c" />
+<meta name="color-scheme" content="dark" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="resume-edit">
+  <main class="wrap page">
+    <div class="sec-head"><span class="no">&rarr;</span><h2 data-decode="edit résumé">edit résumé</h2><span class="rule"></span></div>
+    <p class="md-intro">Edit your résumé's LaTeX source below, then download it. To publish the change: put the file at <code>resume/resume.tex</code> in your repo and push &mdash; GitHub Actions recompiles the PDF &mdash; or replace it locally and recompile. (A browser can't compile LaTeX, so there's no live PDF preview here.)</p>
+
+    <div class="md-toolbar">
+      <label class="md-btn" for="tex-file">&#8593; upload .tex</label>
+      <input id="tex-file" type="file" accept=".tex,.txt" hidden />
+      <button class="md-btn" id="tex-reload">reload current</button>
+      <button class="md-btn" id="tex-copy">copy</button>
+      <span class="grow"></span>
+      <span class="dim" id="tex-status" style="font-size:12px"></span>
+      <button class="md-btn primary" id="tex-download">&#8595; download .tex</button>
+    </div>
+
+    <div class="md-pane" style="min-height:64vh">
+      <div class="head"><span><span class="dot"></span>resume.tex</span><span id="tex-name" style="text-transform:none">resume.tex</span></div>
+      <textarea id="tex-input" spellcheck="false" placeholder="% your résumé LaTeX source..."></textarea>
+    </div>
+
+    <p class="tex-note">After downloading: replace <code>resume/resume.tex</code> in your repo and push (Actions rebuilds the PDF), or recompile locally with <code>latexmk -pdf resume.tex</code>. Your icons and the build workflow are already wired up.</p>
+  </main>
+
+  <script type="text/plain" id="tex-src">%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)  — original CV template Copyright (c) 2021 Jitin Nair
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+\documentclass[a4paper,12pt]{article}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES
+%----------------------------------------------------------------------------------------
+\usepackage{url}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+
+\RequirePackage{color}
+\RequirePackage{graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[scale=0.9]{geometry}
+
+\usepackage{tabularx}
+\usepackage{enumitem}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\usepackage{supertabular}
+\usepackage{tabularx}
+\newlength{\fullcollw}
+\setlength{\fullcollw}{0.47\textwidth}
+
+\usepackage{titlesec}
+\usepackage{multicol}
+\usepackage{multirow}
+
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{10pt}{10pt}
+
+
+\usepackage[unicode, draft=false]{hyperref}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour,bookmarks=false,pdfauthor={Manik Das},pdftitle={Manik Das — Resume}}
+
+
+%----------------------------------------------------------------------------------------
+%	BEGIN DOCUMENT
+%----------------------------------------------------------------------------------------
+\begin{document}
+\pagestyle{empty}
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+\begin{tabularx}{\linewidth}{@{} C @{}}
+\Huge{\textbf{Manik Das}} \\[6.5pt]
+\end{tabularx}
+
+\parbox{0.30cm}{%
+\IfFileExists{072-location.pdf}{\includegraphics[width=0.5cm,clip]{072-location.pdf}}{}
+}
+\href{072-location.pdf}
+{\raisebox{-0.05\height}\\ Kolkata, West Bengal, India}
+
+
+\parbox{0.35cm}{%
+\IfFileExists{067-phone.pdf}{\includegraphics[width=0.5cm,clip]{067-phone.pdf}}{}
+}
+\href{tel:+91 7550833493}
+{\raisebox{-0.05\height}\\ +91 7550833493}
+
+\parbox{0.30cm}{%
+\IfFileExists{070-envelop.pdf}{\includegraphics[width=0.5cm,clip]{070-envelop.pdf}}{}
+}
+\href{mailto:manik07012003@gmail.com}
+{\raisebox{-0.05\height}\\ manik07012003@gmail.com}
+
+%----------------------------------------------------------------------------------------
+\section{\textbf{Summary}}
+Cybersecurity graduate with hands-on experience in penetration testing, offensive security, and web application security. Active CTF player with a strong foundation in Linux hardening, digital forensics, and vulnerability assessment.
+
+\section{\textbf{Skills}}
+\begin{itemize}
+    \item \textbf{Programming:} Python (Intermediate) \& Bash (Beginner).
+    \item \textbf{Core Skills:}  Web Application Security, Network Security, Digital Forensics, Cryptography Concepts, Linux, Low-Level Networking.
+    \item \textbf{Tools:} NMAP, Metasploit, Burp Suite, IBM AppScan and more.
+\end{itemize}
+
+\section{\textbf{Work Experience}}
+
+\begin{tabularx}{\linewidth}{ @{}l r@{} }
+\textbf{Assistant System Engineer || Tata Consultancy Services (India) } & \hfill \textbf{Oct 2024 - Present  } \\[3.75pt]
+\multicolumn{2}{@{}X@{}}{{As a Red Team Security Engineer (Assistant System Engineer), I developed practical skills in offensive security and demonstrated proficiency in tools and techniques used in simulated attack scenarios, including: }
+\begin{minipage}[t]{\linewidth}
+\break
+    \begin{itemize}
+        \item Performing web application and infrastructure penetration testing to identify security weaknesses.
+    \end{itemize}
+         \begin{itemize}
+             \item Utilizing tools such as Burp Suite, IBM AppScan, Nmap, and Metasploit for reconnaissance, vulnerability scanning, and exploitation.
+             \item Identifying common vulnerabilities such as XSS, SQL Injection, CSRF, and IDOR in internal and client-facing applications.
+             \item Assisting in the creation of detailed reports outlining findings, exploitation steps, and remediation recommendations.
+         \end{itemize}
+    \end{minipage}
+}
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{ @{}l r@{} }
+\textbf{Cyber Forensic intern(Remote) || Cyber Secured India} & \hfill \textbf{Apr 2023 - Jun 2023} \\[3.75pt]
+\multicolumn{2}{@{}X@{}}{As a Digital Forensics Intern, I gained foundational knowledge in digital forensics and utilized basic tools, including:
+}
+\end{tabularx}
+\begin{itemize}
+    \item Digital evidence collection and preservation.
+    \item  Forensic software such as EnCase, Volatility, FTK imager, and Autopsy for data recovery.
+\end{itemize}
+
+\section{\textbf{Projects}}
+
+\begin{tabularx}{\linewidth}{ @{}l r@{} }
+All of my projects can be found on my \textbf{GitHub}. \hspace{0.5cm}  \href{https://github.com/XENOFER}{\textbf{\{Link\}}} & \hfill  \\[3.75pt]
+\multicolumn{2}{@{}X@{}}{
+A few significant ones are:  }  \\
+\end{tabularx}
+\begin{itemize}
+    \item Mac Changer -- Developed a Python script to spoof MAC addresses for Red Team simulations.
+    \item  Cipher Cracker -- Created a Caesar/Shift cipher decoder to automate decryption for CTF challenges.
+\end{itemize}
+
+\section{\textbf{CERTIFICATIONS}}
+\begin{itemize}
+    \item  {\textbf{Pursuing:}} eJPT (eLearnSecurity Junior Penetration Tester)
+    \item Learn Ethical Hacking From scratch  \hspace{0.5cm}\href{https://udemy-certificate.s3.amazonaws.com/pdf/UC-bb21bb08-50c2-4603-a808-638c7418bfe9.pdf}{\textbf{\{Link\}}}
+    \item Ethical Hacking  \hspace{0.5cm} \href{https://drive.google.com/file/d/15vbf5h4OEnkhlSE-mXCN94pCqaR-uK-s/view?usp=sharing}{\textbf{\{Link\}}}
+\end{itemize}
+
+\section{\textbf{Education}}
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+2021-2024 & B. Sc in IT (\textbf{Cyber Security})  at \textbf{Maulana Abul Kalam Azad University of Technology } \hfill  (CGPA: 8.03) \\
+2019-2021 & Class 12th WBCHSE \textbf{Barajaguli Gopal Academy}\hfill  (76.20\%) \\
+\end{tabularx}
+
+\section{\textbf{Research}}
+\begin{tabularx}{\linewidth}{@{}l X@{}}{I write about my research and experiments on my blog. \hspace{0.5cm}     \href{https://medium.com/@xenofer}{\textbf{\{Link\}}}}
+\end{tabularx}
+\begin{itemize}
+    \item I solve a lot of \textbf{HTB (Hack The Box)} and \textbf{TryHackMe} labs and write about them on my blog.
+\end{itemize}
+
+\section{\textbf{Achievements}}
+Actively participate in Capture The Flag (CTF) competitions. Key highlights:
+\begin{itemize}
+    \item Top 100 Finalist -- TCS HackQuest (Season 8)
+    \item Took part in a live ctf named \textbf{HacksCTF}. \hspace{0.5cm} \href{https://drive.google.com/file/d/1NL_6BI3KcTJFqS_EWWkIEAhACCWk3aDL/view?usp=sharing}{\textbf{\{Link\}}}
+\end{itemize}
+
+\section{\textbf{Socials}}
+\begin{itemize}
+    \item \textbf{Linkedin: }\href{https://www.linkedin.com/in/manik-das-38ba41243/}{ Link}
+    \item \textbf{Twitter: }\href{https://twitter.com/Xenofer01}{Link}
+    \item \textbf{Github: }\href{https://github.com/XENOFER}{ Link}
+    \item \textbf{TryHackme: }\href{https://tryhackme.com/p/XENOFER}{ Link}
+    \item \textbf{HacktheBox: }\href{https://app.hackthebox.com/profile/1195849}{ Link}
+    \item \textbf{Medium: }\href{https://medium.com/@xenofer}{Link}
+\end{itemize}
+
+\end{document}
+</script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/resume-edit.js"></script>
+</body>
+</html>

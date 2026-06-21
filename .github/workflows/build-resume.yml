@@ -1,0 +1,40 @@
+name: Build résumé PDF
+
+# Recompiles resume/resume.tex into assets/resume/manik-das-resume.pdf
+# whenever the LaTeX source (or this workflow) changes, then commits the PDF
+# so GitHub Pages serves the latest version. Edit the .tex, push, done.
+
+on:
+  push:
+    paths:
+      - "resume/**"
+      - ".github/workflows/build-resume.yml"
+  workflow_dispatch: {}   # also runnable by hand from the Actions tab
+
+permissions:
+  contents: write          # needed to commit the rebuilt PDF back to the repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX (full TeX Live)
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: resume
+          root_file: resume.tex
+          # latexmk (default) compiles resume.tex -> resume.pdf using your icon PDFs.
+
+      - name: Publish the PDF into the site
+        run: |
+          mkdir -p assets/resume
+          cp resume/resume.pdf assets/resume/manik-das-resume.pdf
+
+      - name: Commit the rebuilt PDF
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: rebuild résumé PDF [skip ci]"
+          file_pattern: assets/resume/manik-das-resume.pdf

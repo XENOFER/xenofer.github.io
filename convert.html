@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Markdown → HTML — Manik Das (XENOFER)</title>
+<meta name="description" content="Convert Markdown notes into a styled HTML file, in the browser." />
+<meta name="theme-color" content="#07100c" />
+<meta name="color-scheme" content="dark" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="convert">
+  <main class="wrap page">
+    <div class="sec-head"><span class="no">→</span><h2 data-decode="markdown → html">markdown → html</h2><span class="rule"></span></div>
+    <p class="md-intro">Paste your Markdown notes or drop a <code>.md</code> file, preview them in this site's look, then download a ready HTML file. It all runs in your browser — nothing is uploaded anywhere. Front-matter (a <code>title:</code> at the top between <code>---</code> lines) is used for the filename and page title.</p>
+
+    <div class="md-toolbar">
+      <label class="md-btn" for="md-file">⬆ upload .md</label>
+      <input id="md-file" type="file" accept=".md,.markdown,.txt,.text" hidden />
+      <button class="md-btn" id="md-sample">load sample</button>
+      <button class="md-btn" id="md-clear">clear</button>
+      <span class="grow"></span>
+      <span class="dim" style="font-size:12px">output:</span>
+      <div class="md-seg" id="md-out">
+        <button data-out="site" aria-pressed="true" title="a page that matches your site; goes in a folder">site page</button>
+        <button data-out="standalone" title="self-contained file, opens anywhere">standalone</button>
+      </div>
+      <div class="md-seg" id="md-dest" title="which folder the page lives in">
+        <button data-dest="blog" aria-pressed="true">blog/</button>
+        <button data-dest="research">research/</button>
+        <button data-dest="root">root</button>
+      </div>
+      <button class="md-btn primary" id="md-download">↓ download HTML</button>
+    </div>
+
+    <p class="md-path" id="md-path"></p>
+    <div class="md-config" id="md-config" style="display:none">
+      <div class="md-config-head"><span>then add this to <code>assets/js/config.js</code></span><button class="md-btn" id="md-config-copy">copy</button></div>
+      <pre><code></code></pre>
+    </div>
+
+    <div class="md-tool">
+      <div class="md-pane" id="md-editor">
+        <div class="head"><span><span class="dot"></span>markdown</span><span id="md-name" style="text-transform:none">note.md</span></div>
+        <textarea id="md-input" spellcheck="false" placeholder="# Paste your notes here…&#10;&#10;or drop a .md file onto this panel"></textarea>
+      </div>
+      <div class="md-pane">
+        <div class="head"><span><span class="dot"></span>preview</span><span style="text-transform:none">your site's look</span></div>
+        <div id="md-preview"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/marked.umd.js"></script>
+  <script src="assets/js/convert.js"></script>
+</body>
+</html>
