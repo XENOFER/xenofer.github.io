@@ -89,14 +89,15 @@ const CONFIG = {
   blog: [
      // Android part will add here later
      { title:"SSL Pinning Bypass Report — Flutter developed Mobile App (Android)", date:"2026",
-      summary:"one-line teaser shown on the card",
+      summary:"SSL pinning helps Flutter Android apps verify that they are communicating with the legitimate server. This article explains how SSL pinning bypass works in authorized testing environments and how developers can use those insights to improve app security.",
+      body:"SSL pinning adds an extra layer of protection by allowing an app to trust only a specific certificate or public key. While this helps prevent man-in-the-middle attacks, it can also make debugging and security testing more difficult. In Flutter-based Android applications, testers may need to bypass pinning in a controlled environment to inspect network behavior and identify security weaknesses. Understanding these techniques can help developers build stronger implementations and ensure that sensitive app communication remains protected in production.",
       link:"blog/ssl-pinning-bypass-report-osl-mobile-app-android.html" },
      // later add here new things
-    { title:"Breaking JWTs: alg:none and weak-secret attacks", date:"draft",
+    { title:"Breaking JWTs: alg:none and weak-secret attacks", date:"2026",
       summary:"How the classic JWT attacks actually work, demonstrated with the in-browser engine from CipherToken.",
       body:"Placeholder seed — you already built the demos for this in JWT_token_web, so the writeup is half-done. Walk through alg:none forgery and dictionary attacks on weak HMAC secrets. Or set a `link` to a published version.",
       link:"blog/breaking-jwts.html" },
-    { title:"Building a Burp Suite alternative in Rust", date:"draft",
+    { title:"Building a Burp Suite alternative in Rust", date:"2026",
       summary:"Why I'm building websec-toolkit on a Rust core with Tauri v2 + React, and what an intercepting proxy actually has to do.",
       body:"Placeholder seed tied to your flagship project. Notes on the architecture, the HTTP interception model, and the Rust/Tauri trade-offs would make a great post that doubles as proof of depth.",
       link:"" }
