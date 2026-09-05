@@ -87,6 +87,12 @@ const CONFIG = {
 
   // blog — short posts can live in `body`. For long ones, set `link` instead.
   blog: [
+     {
+        title:"Understand JSON Web Tokens — inside and out.",date:"Sep 2026",
+        summary:"JSON Web Token, commonly called JWT, is a compact and secure way to transmit information between two parties. It is often used in web applications to authenticate users after they log in. Instead of sending login details with every request, the server gives the user a token that can be used to prove their identity.",
+        body:"When a user logs in, the server creates and sends a JWT to the client. The client then includes this token in future requests, usually in the authorization header. The server checks the token’s signature and, if it is valid, allows the user to access protected resources.",
+        link:"https://xenofer.github.io/JWT_token_web/"
+     },
      // Android part will add here later
      { title:"SSL Pinning Bypass Report — Flutter developed Mobile App (Android)", date:"2026",
       summary:"SSL pinning helps Flutter Android apps verify that they are communicating with the legitimate server. This article explains how SSL pinning bypass works in authorized testing environments and how developers can use those insights to improve app security.",
