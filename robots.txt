@@ -1,2 +1,7 @@
 # Welcome bro
 # will add later
+
+User-agent: *
+Allow: /
+
+Sitemap: https://xenofer.github.io/sitemap.xml
