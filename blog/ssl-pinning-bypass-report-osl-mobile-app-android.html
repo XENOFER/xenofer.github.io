@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<!-- Self-contained: this renders correctly anywhere (the theme is baked in).
+     Put it in the "blog/" folder so the nav links above resolve to your other pages. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SSL Pinning Bypass Report — OSL Mobile App (Android) — XENOFER</title>
+<meta name="description" content="SSL Pinning Bypass Report — OSL Mobile App (Android)" />
+<meta name="color-scheme" content="dark" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07100c;--bg-1:#0a1712;--bg-2:#0e201a;--bg-3:#123026;--border:#1b3a2d;--border-2:#265141;--green:#5af78e;--green-dim:#3a8a5e;--green-br:#aeffc8;--amber:#ffce6a;--cyan:#5ad4e6;--text:#cdf5dc;--text-dim:#6f9a85;--muted:#45685a;--mono:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;--disp:'Space Mono','JetBrains Mono',monospace;}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:radial-gradient(1100px 650px at 80% -10%,rgba(90,247,142,0.06),transparent 60%),var(--bg);color:var(--text);font-family:var(--mono);line-height:1.7;-webkit-font-smoothing:antialiased;}
+::selection{background:rgba(90,247,142,0.28);color:#fff}
+.doc{max-width:760px;margin:0 auto;padding:56px 22px 96px}
+.md-content{font-size:16px}
+.md-content>*:first-child{margin-top:0}
+.md-content h1,.md-content h2,.md-content h3,.md-content h4{font-family:var(--disp);color:var(--green-br);line-height:1.2;margin:1.6em 0 .5em}
+.md-content h1{font-size:1.9em;border-bottom:1px solid var(--border-2);padding-bottom:.3em;text-shadow:0 0 22px rgba(90,247,142,.25)}
+.md-content h2{font-size:1.45em}.md-content h3{font-size:1.2em}.md-content h4{font-size:1.05em;color:var(--amber)}
+.md-content p{margin:0 0 1em}
+.md-content a{color:var(--cyan);text-decoration:underline;text-underline-offset:2px}
+.md-content a:hover{color:var(--green-br)}
+.md-content strong{color:var(--green-br);font-weight:700}
+.md-content ul,.md-content ol{margin:0 0 1em;padding-left:1.5em}
+.md-content li{margin:.25em 0}.md-content li::marker{color:var(--green-dim)}
+.md-content blockquote{margin:0 0 1em;padding:.4em 1em;border-left:3px solid var(--green);background:var(--bg-2);color:var(--text-dim)}
+.md-content blockquote p{margin:.3em 0}
+.md-content code{font-family:var(--mono);font-size:.9em;color:var(--amber);background:var(--bg-2);border:1px solid var(--border);padding:.08em .4em;border-radius:3px}
+.md-content pre{background:#06100b;border:1px solid var(--border-2);border-left:2px solid var(--green-dim);padding:14px 16px;overflow-x:auto;margin:0 0 1em;border-radius:2px}
+.md-content pre code{background:none;border:0;padding:0;color:var(--text);font-size:.88em;line-height:1.6}
+.md-content hr{border:0;border-top:1px solid var(--border-2);margin:1.6em 0}
+.md-content img{max-width:100%;height:auto;border:1px solid var(--border)}
+.md-content table{border-collapse:collapse;width:100%;margin:0 0 1em;font-size:.92em;display:block;overflow-x:auto}
+.md-content th,.md-content td{border:1px solid var(--border-2);padding:7px 11px;text-align:left}
+.md-content th{background:var(--bg-2);color:var(--amber)}
+.md-foot{margin-top:48px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+.post-bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px clamp(14px,4vw,24px);background:linear-gradient(var(--bg),rgba(7,16,12,.92));backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+.post-bar .brand{font-family:var(--disp);color:var(--green-br);font-weight:700;letter-spacing:1.5px;text-decoration:none;font-size:15px}
+.post-bar nav{display:flex;gap:2px;overflow-x:auto}
+.post-bar nav a{color:var(--text-dim);padding:6px 12px;text-decoration:none;font-size:13.5px;border-bottom:2px solid transparent;white-space:nowrap}
+.post-bar nav a:hover{color:var(--green-br)}
+.post-bar nav a.active{color:var(--green-br);border-bottom-color:var(--green)}
+.post-bar .spacer{flex:1}
+.post-bar .back{color:var(--text-dim);text-decoration:none;font-size:12.5px;border:1px solid var(--border-2);padding:6px 10px;border-radius:2px}
+.post-bar .back:hover{color:var(--green-br);border-color:var(--green-dim)}
+.post-wrap{max-width:780px;margin:0 auto;padding:42px clamp(16px,5vw,24px) 90px}
+.post-foot{margin-top:48px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.post-foot a{color:var(--green-br);text-decoration:none}
+.post-foot a:hover{color:var(--accent-br)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.22) 3px,rgba(0,0,0,0) 4px),radial-gradient(125% 125% at 50% 50%,transparent 60%,rgba(0,0,0,.5) 100%)}
+@media(max-width:600px){.post-bar .brand{display:none}}</style>
+</head>
+<body>
+  <header class="post-bar">
+    <a class="brand" href="../index.html">XENOFER</a>
+    <nav><a href="../index.html">home</a><a href="../about.html">about</a><a href="../projects.html">projects</a><a href="../blog.html" class="active">blog</a><a href="../research.html">research</a><a href="../contact.html">contact</a></nav>
+    <span class="spacer"></span>
+    <a class="back" href="../blog.html">↩ back to blog</a>
+  </header>
+  <main class="post-wrap">
+    <article class="md-content">
+<h1>SSL Pinning Bypass Report — OSL Mobile App (Android)</h1>
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#1-target-application-overview">Target Application Overview</a></li>
+<li><a href="#2-environment-setup">Environment Setup</a></li>
+<li><a href="#3-phase-1-generate-and-prepare-burp-suite-ca-certificate">Phase 1: Generate and Prepare Burp Suite CA Certificate</a></li>
+<li><a href="#4-phase-2-push-certificate-to-emulator-initial-attempts">Phase 2: Push Certificate to Emulator (Initial Attempts)</a></li>
+<li><a href="#5-phase-3-writable-system-attempts">Phase 3: Writable System Attempts</a></li>
+<li><a href="#6-phase-4-tmpfs-overlay-method-working-approach">Phase 4: tmpfs Overlay Method (Working Approach)</a></li>
+<li><a href="#7-phase-5-traffic-redirection-with-iptables">Phase 5: Traffic Redirection with iptables</a></li>
+<li><a href="#8-phase-6-wifi-proxy-configuration">Phase 6: WiFi Proxy Configuration</a></li>
+<li><a href="#9-phase-7-selinux-context-fix">Phase 7: SELinux Context Fix</a></li>
+<li><a href="#10-phase-8-burp-suite-configuration">Phase 8: Burp Suite Configuration</a></li>
+<li><a href="#11-observations-and-challenges">Observations and Challenges</a></li>
+<li><a href="#12-complete-quick-reference-script">Complete Quick Reference Script</a></li>
+<li><a href="#13-lessons-learned">Lessons Learned</a></li>
+</ol>
+<hr>
+<h2>1. Target Application Overview</h2>
+<p><strong>Application:</strong> OSL (com.oslmobile.global)
+<strong>Version:</strong> 1.10.12
+<strong>Framework:</strong> Flutter (Dart) + Native Android (Kotlin/Java)
+<strong>Architecture:</strong> Hybrid — Flutter handles most API calls via Dio HTTP client, while native layer uses OkHttp for services like Checkout.com risk SDK
+<strong>API Endpoints:</strong> trade-glb.osl.com, stream-glb.osl.com (WebSocket)
+<strong>CDN/Protection:</strong> Cloudflare (cf-ray headers, __cf_bm cookies)
+<strong>Android Version:</strong> Android 11 (API 30) on ARM64 emulator
+<strong>Network Security Config:</strong> debugBuild: false (production build, only trusts system CAs)
+<strong>Key Libraries Detected from Logcat:</strong></p>
+<ul>
+<li>Firebase Crashlytics 19.4.2</li>
+<li>TheRouter (navigation framework)</li>
+<li>MMKV (key-value storage)</li>
+<li>FlutterBoost (Flutter-Native bridge)</li>
+<li>GeeTest (device fingerprinting)</li>
+<li>Checkout.com Risk SDK</li>
+<li>Sumsub/Idensic KYC SDK</li>
+<li>LiveEventBus</li>
+</ul>
+<hr>
+<h2>2. Environment Setup</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>macOS with Android SDK installed</li>
+<li>Android Emulator (ARM64, API 30, rooted)</li>
+<li>Burp Suite (Community or Professional)</li>
+<li>OpenSSL (comes with macOS)</li>
+<li>ADB (Android Debug Bridge)</li>
+</ul>
+<h3>Emulator Details</h3>
+<pre><code>AVD Name: android_11_root
+System Image: android-30/google_apis/arm64-v8a
+Emulator Serial: emulator-5554
+</code></pre>
+<h3>Verify Emulator is Running</h3>
+<pre><code class="language-bash">adb devices
+</code></pre>
+<p><strong>What this does:</strong> Lists all connected Android devices and emulators. You should see <code>emulator-5554 device</code> in the output. If it shows <code>offline</code>, wait for the emulator to fully boot.</p>
+<h3>Verify Root Access</h3>
+<pre><code class="language-bash">adb -s emulator-5554 shell
+su
+whoami
+</code></pre>
+<p><strong>What this does:</strong></p>
+<ul>
+<li><code>adb -s emulator-5554 shell</code> — Opens a shell session on the specific emulator (use <code>-s</code> when multiple devices are connected)</li>
+<li><code>su</code> — Switches to superuser (root). This is needed for all privileged operations</li>
+<li><code>whoami</code> — Confirms you are running as <code>root</code></li>
+</ul>
+<p><strong>Expected output:</strong> <code>root</code></p>
+<hr>
+<h2>3. Phase 1: Generate and Prepare Burp Suite CA Certificate</h2>
+<h3>Step 1: Export Burp&#39;s CA Certificate</h3>
+<p>Open Burp Suite → Proxy → Options → Import/Export CA Certificate → Export Certificate in DER format → Save as <code>cacert.der</code></p>
+<h3>Step 2: Convert DER to PEM Format</h3>
+<pre><code class="language-bash">openssl x509 -inform DER -in cacert.der -out cacert.pem
+</code></pre>
+<p><strong>What this does:</strong> Converts the Burp CA certificate from DER (binary) format to PEM (Base64 text) format. Android&#39;s certificate store requires PEM format with a specific filename.</p>
+<p><strong>Breakdown:</strong></p>
+<ul>
+<li><code>openssl x509</code> — OpenSSL&#39;s X.509 certificate utility</li>
+<li><code>-inform DER</code> — Input format is DER (Distinguished Encoding Rules, binary)</li>
+<li><code>-in cacert.der</code> — Input file (exported from Burp)</li>
+<li><code>-out cacert.pem</code> — Output file in PEM format</li>
+</ul>
+<h3>Step 3: Get the Certificate Hash</h3>
+<pre><code class="language-bash">openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1
+</code></pre>
+<p><strong>What this does:</strong> Calculates the &quot;old-style&quot; hash of the certificate&#39;s subject name. Android uses this hash as the filename for system CA certificates.</p>
+<p><strong>Breakdown:</strong></p>
+<ul>
+<li><code>-subject_hash_old</code> — Generates the OpenSSL &quot;old&quot; hash (Android uses this, not the new hash)</li>
+<li><code>| head -1</code> — Takes only the first line of output (the hash itself), ignoring the certificate content that follows</li>
+</ul>
+<p><strong>Output in our case:</strong> <code>9a5ba575</code></p>
+<h3>Step 4: Rename Certificate File</h3>
+<pre><code class="language-bash">cp cacert.pem 9a5ba575.0
+</code></pre>
+<p><strong>What this does:</strong> Copies the PEM certificate and renames it to <code>&lt;hash&gt;.0</code>. Android&#39;s system certificate store expects certificates named as <code>&lt;subject_hash&gt;.0</code>. The <code>.0</code> suffix is an index — if multiple certificates had the same hash, they&#39;d be <code>.0</code>, <code>.1</code>, <code>.2</code>, etc.</p>
+<hr>
+<h2>4. Phase 2: Push Certificate to Emulator (Initial Attempts)</h2>
+<h3>Attempt 1: Standard adb remount (FAILED)</h3>
+<pre><code class="language-bash">adb -s emulator-5554 root
+adb -s emulator-5554 remount
+adb -s emulator-5554 push 9a5ba575.0 /system/etc/security/cacerts/
+adb -s emulator-5554 shell chmod 644 /system/etc/security/cacerts/9a5ba575.0
+adb -s emulator-5554 reboot
+</code></pre>
+<p><strong>What each command does:</strong></p>
+<ul>
+<li><code>adb root</code> — Restarts the ADB daemon on the device with root privileges</li>
+<li><code>adb remount</code> — Remounts the /system partition as read-write (normally it&#39;s read-only for security)</li>
+<li><code>adb push &lt;file&gt; &lt;path&gt;</code> — Copies a file from your computer to the Android device</li>
+<li><code>chmod 644</code> — Sets file permissions: owner can read/write (6), group and others can only read (4,4). This is required so all apps can read the certificate</li>
+<li><code>reboot</code> — Restarts the emulator to apply changes</li>
+</ul>
+<p><strong>Result:</strong> <code>remount failed</code> — The system partition couldn&#39;t be remounted due to I/O errors and overlayfs issues. This is common on newer emulator images.</p>
+<h3>Attempt 2: User Certificate Store (WORKED but insufficient)</h3>
+<pre><code class="language-bash">adb -s emulator-5554 push 9a5ba575.0 /sdcard/
+</code></pre>
+<p><strong>What this does:</strong> Pushes the certificate to the SD card, which is always writable.</p>
+<p>Then in the adb shell:</p>
+<pre><code class="language-bash">su
+mkdir -p /data/misc/user/0/cacerts-added/
+cp /sdcard/9a5ba575.0 /data/misc/user/0/cacerts-added/
+chmod 644 /data/misc/user/0/cacerts-added/9a5ba575.0
+reboot
+</code></pre>
+<p><strong>What each command does:</strong></p>
+<ul>
+<li><code>mkdir -p /data/misc/user/0/cacerts-added/</code> — Creates the directory for user-installed CA certificates. The <code>0</code> refers to user ID 0 (primary user). <code>-p</code> creates parent directories if they don&#39;t exist</li>
+<li><code>cp /sdcard/9a5ba575.0 ...</code> — Copies the certificate from SD card to the user CA store</li>
+<li><code>chmod 644</code> — Sets correct read permissions</li>
+<li><code>reboot</code> — Restarts to apply</li>
+</ul>
+<p><strong>Result:</strong> Certificate installed in user store, but the app&#39;s <code>network_security_config</code> with <code>debugBuild: false</code> means it only trusts <strong>system</strong> CAs, not user-installed ones. The native OkHttp layer showed <code>SSLHandshakeException: Trust anchor for certification path not found</code>.</p>
+<h3>Attempt 3: Mount /system as Read-Write (FAILED)</h3>
+<pre><code class="language-bash">adb -s emulator-5554 shell
+su
+mount -o rw,remount /system
+</code></pre>
+<p><strong>What this does:</strong> Attempts to remount the /system partition with read-write access directly from the shell.</p>
+<p><strong>Result:</strong> <code>mount: &#39;/system&#39; not in /proc/mounts</code> — On system-as-root emulators, /system isn&#39;t a separate mount point.</p>
+<h3>Attempt 4: Remount Root Filesystem (FAILED)</h3>
+<pre><code class="language-bash">mount -o rw,remount /
+</code></pre>
+<p><strong>What this does:</strong> Attempts to remount the root filesystem as read-write, which on system-as-root devices includes /system.</p>
+<p><strong>Result:</strong> <code>&#39;/dev/block/dm-0&#39; is read-only</code> — The device-mapper block device is enforced as read-only.</p>
+<hr>
+<h2>5. Phase 3: Writable System Attempts</h2>
+<h3>Attempt 5: Launch Emulator with -writable-system Flag</h3>
+<p>First, find your AVD name:</p>
+<pre><code class="language-bash">emulator -list-avds
+</code></pre>
+<p><strong>What this does:</strong> Lists all available Android Virtual Devices configured on your system.</p>
+<p><strong>Output:</strong></p>
+<pre><code>android_11_root
+non_rooted
+</code></pre>
+<p>Then launch with writable system:</p>
+<pre><code class="language-bash">emulator -avd android_11_root -writable-system -no-snapshot-load
+</code></pre>
+<p><strong>What each flag does:</strong></p>
+<ul>
+<li><code>-avd android_11_root</code> — Specifies which AVD to launch</li>
+<li><code>-writable-system</code> — Makes the system partition writable, allowing modifications to /system</li>
+<li><code>-no-snapshot-load</code> — Forces a cold boot instead of loading a saved snapshot. This ensures the writable system flag takes effect from a clean state</li>
+</ul>
+<p><strong>Note:</strong> First boot with these flags can take 2-5 minutes on ARM emulators. Wait until <code>adb devices</code> shows <code>device</code> instead of <code>offline</code>.</p>
+<h3>Attempt 6: adb remount After -writable-system (FAILED)</h3>
+<pre><code class="language-bash">adb -s emulator-5554 root
+adb -s emulator-5554 remount
+</code></pre>
+<p><strong>Result:</strong> Still failed with the same overlayfs I/O errors. This particular system image has issues with the remount mechanism.</p>
+<h3>Attempt 7: Disable Verity + Remount (FAILED)</h3>
+<pre><code class="language-bash">adb -s emulator-5554 disable-verity
+adb -s emulator-5554 reboot
+adb -s emulator-5554 root
+adb -s emulator-5554 remount
+</code></pre>
+<p><strong>What each command does:</strong></p>
+<ul>
+<li><code>disable-verity</code> — Disables dm-verity, Android&#39;s verified boot mechanism that ensures the system partition hasn&#39;t been modified. Returns &quot;Successfully disabled verity&quot;</li>
+<li><code>reboot</code> — Required for verity changes to take effect</li>
+<li><code>root</code> + <code>remount</code> — Attempt to remount again after verity is disabled</li>
+</ul>
+<p><strong>Result:</strong> <code>disable-verity</code> succeeded, but <code>remount</code> still failed. Even without verity, the overlayfs mechanism couldn&#39;t be set up on this image.</p>
+<hr>
+<h2>6. Phase 4: tmpfs Overlay Method (Working Approach)</h2>
+<p>This is the method that successfully placed the Burp CA certificate in the system trust store without needing to modify the read-only system partition.</p>
+<h3>Step 1: Push Certificate to SD Card</h3>
+<pre><code class="language-bash">adb -s emulator-5554 push 9a5ba575.0 /sdcard/
+</code></pre>
+<p><strong>What this does:</strong> Copies the prepared certificate file from your Mac to the emulator&#39;s SD card, which is always writable.</p>
+<h3>Step 2: Create tmpfs Overlay</h3>
+<pre><code class="language-bash">adb -s emulator-5554 shell
+su
+</code></pre>
+<p><strong>What this does:</strong> Opens a root shell on the emulator.</p>
+<pre><code class="language-bash">mkdir -p /dev/tmp_certs
+</code></pre>
+<p><strong>What this does:</strong> Creates a temporary directory in /dev (which is always writable, stored in RAM) to stage our certificates.</p>
+<pre><code class="language-bash">cp /system/etc/security/cacerts/* /dev/tmp_certs/
+</code></pre>
+<p><strong>What this does:</strong> Copies ALL existing system CA certificates to our staging directory. This is critical — we need to preserve all the original certificates, otherwise the device won&#39;t be able to make any HTTPS connections at all.</p>
+<pre><code class="language-bash">cp /sdcard/9a5ba575.0 /dev/tmp_certs/
+</code></pre>
+<p><strong>What this does:</strong> Adds our Burp Suite certificate alongside the existing system certificates in the staging directory.</p>
+<pre><code class="language-bash">chmod 644 /dev/tmp_certs/*
+</code></pre>
+<p><strong>What this does:</strong> Sets proper read permissions on all certificates so any app can read them.</p>
+<pre><code class="language-bash">mount -t tmpfs tmpfs /system/etc/security/cacerts
+</code></pre>
+<p><strong>What this does:</strong> This is the key trick. It mounts a tmpfs (temporary filesystem stored in RAM) on top of the existing /system/etc/security/cacerts directory. This &quot;shadows&quot; the original read-only directory with a writable RAM-based one. The original files underneath are untouched — they&#39;re just hidden by the overlay.</p>
+<p><strong>Breakdown:</strong></p>
+<ul>
+<li><code>mount -t tmpfs</code> — Mount a filesystem of type tmpfs (RAM-based)</li>
+<li><code>tmpfs</code> — The device name (for tmpfs, this is just a label)</li>
+<li><code>/system/etc/security/cacerts</code> — The mount point (where to overlay)</li>
+</ul>
+<pre><code class="language-bash">cp /dev/tmp_certs/* /system/etc/security/cacerts/
+</code></pre>
+<p><strong>What this does:</strong> Copies all certificates (original + Burp) into the newly mounted tmpfs. Now the system certificate store contains everything it had before, plus our Burp certificate.</p>
+<pre><code class="language-bash">chmod 644 /system/etc/security/cacerts/*
+</code></pre>
+<p><strong>What this does:</strong> Sets read permissions again on the files in their final location.</p>
+<pre><code class="language-bash">chcon u:object_r:system_security_cacerts_file:s0 /system/etc/security/cacerts/*
+</code></pre>
+<p><strong>What this does:</strong> Sets the correct SELinux security context on all certificate files. Android uses SELinux (Security-Enhanced Linux) for mandatory access control. Even if Unix file permissions allow access, SELinux can still block it if the context is wrong.</p>
+<p><strong>Breakdown:</strong></p>
+<ul>
+<li><code>chcon</code> — Change SELinux context</li>
+<li><code>u:object_r:system_security_cacerts_file:s0</code> — The SELinux label that Android expects on system CA certificate files:<ul>
+<li><code>u</code> — SELinux user</li>
+<li><code>object_r</code> — SELinux role for files</li>
+<li><code>system_security_cacerts_file</code> — The type that grants read access to apps checking system CAs</li>
+<li><code>s0</code> — Sensitivity level</li>
+</ul>
+</li>
+</ul>
+<h3>Step 3: Verify the Certificate</h3>
+<pre><code class="language-bash">ls -laZ /system/etc/security/cacerts/9a5ba575.0
+</code></pre>
+<p><strong>What this does:</strong> Lists the file with detailed info including SELinux context (-Z flag).</p>
+<p><strong>Expected output:</strong></p>
+<pre><code>-rw-r--r-- 1 root root u:object_r:system_security_cacerts_file:s0 1330 2026-05-05 22:28 /system/etc/security/cacerts/9a5ba575.0
+</code></pre>
+<p><strong>What to verify:</strong></p>
+<ul>
+<li>Permissions: <code>-rw-r--r--</code> (644)</li>
+<li>Owner: <code>root root</code></li>
+<li>SELinux context: <code>u:object_r:system_security_cacerts_file:s0</code></li>
+<li>File size: Should be non-zero (1330 bytes in our case)</li>
+</ul>
+<h3>Important Notes About tmpfs Method</h3>
+<ul>
+<li><strong>Not persistent across reboots</strong> — The tmpfs is in RAM, so it disappears on reboot. You must redo this process after each emulator restart</li>
+<li><strong>No system partition modification needed</strong> — Works even when the system partition is completely read-only</li>
+<li><strong>Preserves original certificates</strong> — All original system CAs remain functional</li>
+<li><strong>SELinux context is critical</strong> — Without the correct <code>chcon</code>, apps will get <code>EACCES (Permission denied)</code> even though file permissions look correct</li>
+</ul>
+<hr>
+<h2>7. Phase 5: Traffic Redirection with iptables</h2>
+<h3>Why iptables is Needed</h3>
+<p>Flutter/Dart applications use their own HTTP stack that ignores Android&#39;s system proxy settings. To force Flutter traffic through Burp Suite, we need to redirect it at the network level using iptables.</p>
+<h3>Set Up iptables Redirect Rules</h3>
+<pre><code class="language-bash">adb -s emulator-5554 shell
+su
+iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination 10.0.2.2:8080
+iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination 10.0.2.2:8080
+</code></pre>
+<p><strong>What each command does:</strong></p>
+<p><strong>Command 1 (HTTPS redirect):</strong></p>
+<ul>
+<li><code>iptables</code> — Linux firewall/packet filtering tool</li>
+<li><code>-t nat</code> — Use the NAT (Network Address Translation) table</li>
+<li><code>-A OUTPUT</code> — Append a rule to the OUTPUT chain (outgoing traffic from the device)</li>
+<li><code>-p tcp</code> — Match TCP protocol</li>
+<li><code>--dport 443</code> — Match traffic going to port 443 (HTTPS)</li>
+<li><code>-j DNAT</code> — Jump to DNAT target (Destination NAT — change where the packet goes)</li>
+<li><code>--to-destination 10.0.2.2:8080</code> — Redirect to 10.0.2.2 port 8080</li>
+</ul>
+<p><strong>Command 2 (HTTP redirect):</strong> Same as above but for port 80 (HTTP).</p>
+<p><strong>About 10.0.2.2:</strong> This is a special IP address in the Android emulator that maps to <code>127.0.0.1</code> (localhost) on the host machine. So traffic destined for any HTTPS server gets redirected to Burp Suite running on your Mac.</p>
+<h3>Remove iptables Rules (if needed)</h3>
+<pre><code class="language-bash">iptables -t nat -F OUTPUT
+</code></pre>
+<p><strong>What this does:</strong> Flushes (removes) all rules in the OUTPUT chain of the NAT table. Use this if the iptables redirect is causing connection timeouts or if you want to switch to WiFi proxy mode.</p>
+<hr>
+<h2>8. Phase 6: WiFi Proxy Configuration</h2>
+<h3>Why WiFi Proxy is Also Needed</h3>
+<p>Some apps (including Flutter apps using Dio) may not have their traffic caught by iptables rules in all cases. Setting the WiFi proxy provides an additional interception method.</p>
+<h3>Set WiFi Proxy via ADB</h3>
+<pre><code class="language-bash">adb -s emulator-5554 shell settings put global http_proxy 10.0.2.2:8080
+</code></pre>
+<p><strong>What this does:</strong> Sets the global HTTP proxy setting on the Android device to route through Burp Suite on your host machine.</p>
+<h3>Set WiFi Proxy via GUI</h3>
+<ol>
+<li>Open <strong>Settings</strong> on the emulator</li>
+<li>Go to <strong>Network &amp; internet</strong> → <strong>Wi-Fi</strong></li>
+<li>Long press on <strong>AndroidWifi</strong></li>
+<li>Tap <strong>Modify network</strong></li>
+<li>Tap <strong>Advanced options</strong></li>
+<li>Change Proxy to <strong>Manual</strong></li>
+<li>Set:<ul>
+<li><strong>Proxy hostname:</strong> <code>10.0.2.2</code></li>
+<li><strong>Proxy port:</strong> <code>8080</code></li>
+</ul>
+</li>
+<li>Tap <strong>Save</strong></li>
+</ol>
+<h3>Remove WiFi Proxy (when done testing)</h3>
+<pre><code class="language-bash">adb -s emulator-5554 shell settings put global http_proxy :0
+</code></pre>
+<p><strong>What this does:</strong> Clears the proxy setting by setting it to an empty host with port 0.</p>
+<hr>
+<h2>9. Phase 7: SELinux Context Fix</h2>
+<h3>The Problem</h3>
+<p>Even after mounting the tmpfs and setting file permissions to 644, the app showed repeated errors:</p>
+<pre><code>DirectoryCertificateSrc: Failed to read certificate from 9a5ba575.0
+java.io.FileNotFoundException: /system/etc/security/cacerts/9a5ba575.0: open failed: EACCES (Permission denied)
+</code></pre>
+<p>This happened because when files are copied to a tmpfs mount, they get the <strong>default SELinux context</strong> (usually <code>u:object_r:tmpfs:s0</code>) instead of the context Android expects for certificate files.</p>
+<h3>The Fix</h3>
+<pre><code class="language-bash">adb -s emulator-5554 shell
+su
+chcon u:object_r:system_security_cacerts_file:s0 /system/etc/security/cacerts/*
+</code></pre>
+<p><strong>What this does:</strong> Changes the SELinux context of all files in the cacerts directory to <code>system_security_cacerts_file</code>, which is the type that Android&#39;s <code>NetworkSecurityConfig</code> and <code>TrustManagerImpl</code> require to read certificate files.</p>
+<h3>Verify the Fix</h3>
+<pre><code class="language-bash">ls -laZ /system/etc/security/cacerts/9a5ba575.0
+</code></pre>
+<p><strong>Expected output should show the correct context:</strong></p>
+<pre><code>-rw-r--r-- 1 root root u:object_r:system_security_cacerts_file:s0 1330 ...
+</code></pre>
+<h3>Force-Stop and Relaunch the App</h3>
+<pre><code class="language-bash">am force-stop com.oslmobile.global
+</code></pre>
+<p><strong>What this does:</strong> Completely kills the app process. This is necessary because the app caches the certificate store in memory when it first starts. A simple reopen from the app drawer would use the cached (broken) certificate list. Force-stopping ensures a fresh start that reads the corrected certificates.</p>
+<hr>
+<h2>10. Phase 8: Burp Suite Configuration</h2>
+<h3>Listener Setup</h3>
+<p>Burp Suite needs two listeners configured:</p>
+<ol>
+<li><strong>Local listener:</strong> <code>127.0.0.1:8080</code> (for WiFi proxy connections)</li>
+<li><strong>Network listener:</strong> <code>&lt;your-IP&gt;:8080</code> (e.g., <code>192.168.1.104:8080</code> for direct connections)</li>
+</ol>
+<h3>Enable Invisible Proxying</h3>
+<p>For the iptables redirect to work, Burp must support &quot;invisible&quot; proxying because the redirected traffic doesn&#39;t contain a proxy CONNECT header.</p>
+<ol>
+<li>Go to <strong>Proxy</strong> → <strong>Options</strong> (or <strong>Proxy Settings</strong>)</li>
+<li>Edit your listener (the one on port 8080)</li>
+<li>Go to <strong>Request handling</strong> tab</li>
+<li>Check <strong>&quot;Support invisible proxying (enable only if needed)&quot;</strong></li>
+<li>Click <strong>OK</strong></li>
+</ol>
+<h3>Bind to All Interfaces</h3>
+<p>Make sure Burp listens on all interfaces:</p>
+<ol>
+<li>Edit the listener</li>
+<li>Under <strong>Bind to address</strong>, select <strong>&quot;All interfaces&quot;</strong></li>
+</ol>
+<hr>
+<h2>11. Observations and Challenges</h2>
+<h3>What We Discovered During Testing</h3>
+<p><strong>1. Flutter/Dart Ignores System Proxy</strong>
+Flutter&#39;s Dart HTTP client (Dio) does not respect Android&#39;s WiFi proxy settings. It also uses its own SSL/TLS implementation compiled into <code>libflutter.so</code>, which means it doesn&#39;t use the Android system certificate store for certificate validation.</p>
+<p><strong>2. Flutter/Dart Ignores System Certificate Store</strong>
+Even with the Burp cert in the system store, Flutter&#39;s Dart layer makes direct connections. The logcat showed Flutter requests succeeding with <code>statusCode: 200</code> while native OkHttp requests were failing with SSL errors — proving the two layers use different trust stores.</p>
+<p><strong>3. Native OkHttp Layer Uses System Store</strong>
+The app&#39;s native layer (Checkout.com Risk SDK, Glide image loading, Firebase) uses OkHttp which respects the Android <code>NetworkSecurityConfig</code>. When the system cert was properly installed with correct SELinux context, these calls should work through Burp.</p>
+<p><strong>4. The App Has <code>network_security_config</code> with <code>debugBuild: false</code></strong>
+This means the app only trusts system CAs in production — user-installed certificates are rejected. This is why the user cert store approach was insufficient.</p>
+<p><strong>5. SELinux Enforcement</strong>
+Even though we confirmed <code>permissive=0</code> (enforcing mode) in the later logs, the SELinux context fix was critical. The earlier session had <code>permissive=1</code> which is why some things worked before.</p>
+<p><strong>6. WebSocket Connections Keep Retrying</strong>
+The WebSocket connections to <code>wss://stream-glb.osl.com</code> were retrying every 4 seconds, indicating they were being caught by iptables but failing the SSL handshake through Burp.</p>
+<h3>Traffic Flow Summary</h3>
+<pre><code>Without Proxy:
+  Flutter (Dio) → Direct HTTPS → trade-glb.osl.com ✅
+  Native (OkHttp) → Direct HTTPS → risk.checkout.com ✅
+
+With iptables + Burp (System Cert Installed):
+  Flutter (Dio) → iptables redirect → Burp → trade-glb.osl.com (Connection timeout due to Flutter&#39;s own SSL)
+  Native (OkHttp) → iptables redirect → Burp → risk.checkout.com (Should work if SELinux is correct)
+
+With WiFi Proxy + Burp:
+  Flutter (Dio) → Ignores proxy → Direct connection (no interception)
+  Native (OkHttp) → WiFi proxy → Burp → Servers (Works if cert is trusted)
+</code></pre>
+<h3>Remaining Challenge: Flutter SSL Pinning</h3>
+<p>The Flutter layer in this app compiles its own certificate verification into <code>libflutter.so</code>. To fully intercept Flutter traffic, additional techniques would be needed:</p>
+<ul>
+<li><strong>reFlutter</strong> — Patches the Flutter binary to disable SSL verification</li>
+<li><strong>Frida</strong> — Runtime hooking to bypass <code>ssl_crypto_x509_session_verify_cert_chain</code> in <code>libflutter.so</code></li>
+</ul>
+<hr>
+<h2>12. Complete Quick Reference Script</h2>
+<p>Here is a single script you can follow each time you start a testing session:</p>
+<pre><code class="language-bash">#!/bin/bash
+# SSL Pinning Bypass Setup Script for Android Emulator
+# Run this after preparing 9a5ba575.0 (Burp cert in PEM with hash filename)
+
+echo &quot;=== Step 1: Launch Emulator with Writable System ===&quot;
+# Run this in a separate terminal:
+# emulator -avd android_11_root -writable-system -no-snapshot-load
+
+echo &quot;=== Step 2: Wait for boot and get root ===&quot;
+adb wait-for-device
+adb -s emulator-5554 root
+sleep 2
+
+echo &quot;=== Step 3: Push Burp certificate to SD card ===&quot;
+adb -s emulator-5554 push 9a5ba575.0 /sdcard/
+
+echo &quot;=== Step 4: Set up tmpfs overlay for system certs ===&quot;
+adb -s emulator-5554 shell su -c &#39;
+  # Create staging directory
+  mkdir -p /dev/tmp_certs
+
+  # Copy existing system certificates
+  cp /system/etc/security/cacerts/* /dev/tmp_certs/
+
+  # Add Burp certificate
+  cp /sdcard/9a5ba575.0 /dev/tmp_certs/
+
+  # Set permissions
+  chmod 644 /dev/tmp_certs/*
+
+  # Mount tmpfs overlay
+  mount -t tmpfs tmpfs /system/etc/security/cacerts
+
+  # Copy all certs to overlay
+  cp /dev/tmp_certs/* /system/etc/security/cacerts/
+
+  # Set permissions and SELinux context
+  chmod 644 /system/etc/security/cacerts/*
+  chcon u:object_r:system_security_cacerts_file:s0 /system/etc/security/cacerts/*
+
+  # Verify
+  echo &quot;=== Verification ===&quot;
+  ls -laZ /system/etc/security/cacerts/9a5ba575.0
+&#39;
+
+echo &quot;=== Step 5: Set up iptables redirect ===&quot;
+adb -s emulator-5554 shell su -c &#39;
+  iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination 10.0.2.2:8080
+  iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination 10.0.2.2:8080
+&#39;
+
+echo &quot;=== Step 6: Set WiFi proxy ===&quot;
+adb -s emulator-5554 shell settings put global http_proxy 10.0.2.2:8080
+
+echo &quot;=== Step 7: Force stop target app ===&quot;
+adb -s emulator-5554 shell am force-stop com.oslmobile.global
+
+echo &quot;=== Setup Complete ===&quot;
+echo &quot;1. Make sure Burp Suite is listening on 0.0.0.0:8080&quot;
+echo &quot;2. Enable &#39;Support invisible proxying&#39; in Burp&quot;
+echo &quot;3. Open the app on the emulator&quot;
+echo &quot;4. Check Burp HTTP History for traffic&quot;
+</code></pre>
+<hr>
+<h2>13. Lessons Learned</h2>
+<h3>For Beginners</h3>
+<ol>
+<li><p><strong>Always check the app framework first.</strong> Flutter apps require different bypass techniques than pure native Android apps. Look for <code>I flutter :</code> in logcat to identify Flutter apps.</p>
+</li>
+<li><p><strong>System CA vs User CA matters.</strong> Production Android apps (API 24+) only trust system CAs by default. User-installed certificates won&#39;t work unless the app&#39;s <code>network_security_config.xml</code> explicitly allows them.</p>
+</li>
+<li><p><strong>SELinux context is as important as file permissions.</strong> On Android, having <code>chmod 644</code> is not enough — files must also have the correct SELinux label. Always run <code>chcon</code> after placing certificate files.</p>
+</li>
+<li><p><strong>The tmpfs overlay trick is powerful.</strong> When you can&#39;t write to <code>/system</code>, mounting a tmpfs on top of a system directory lets you &quot;replace&quot; its contents without modifying the actual partition.</p>
+</li>
+<li><p><strong>Different HTTP stacks need different approaches:</strong></p>
+<ul>
+<li>Native Android (OkHttp, HttpURLConnection) → System cert store + proxy</li>
+<li>Flutter/Dart → Needs Frida/reFlutter to patch libflutter.so</li>
+<li>WebView (Chromium) → Uses its own cert validation (cr_X509Util)</li>
+</ul>
+</li>
+<li><p><strong>iptables vs WiFi Proxy:</strong></p>
+<ul>
+<li>WiFi Proxy: Apps must honor the proxy setting (many don&#39;t)</li>
+<li>iptables: Forces ALL traffic through Burp, but requires invisible proxying mode</li>
+<li>Best approach: Use both together</li>
+</ul>
+</li>
+<li><p><strong>The emulator&#39;s 10.0.2.2</strong> is your gateway to the host machine&#39;s localhost. Always use this IP when configuring proxy settings on the emulator.</p>
+</li>
+<li><p><strong>tmpfs changes are lost on reboot.</strong> Keep your setup script handy — you&#39;ll need to run it every time the emulator restarts.</p>
+</li>
+</ol>
+<h3>Key Takeaways for This Specific App (OSL)</h3>
+<ul>
+<li>The native layer (OkHttp for Checkout.com, Glide, Firebase) can be intercepted with the system cert + proxy approach</li>
+<li>The Flutter layer uses Dart&#39;s HTTP client (Dio) which bypasses both the system proxy and system certificate store</li>
+<li>Full interception of Flutter traffic would require Frida or reFlutter as an additional step</li>
+<li>The app implements <code>network_security_config</code> that only trusts system CAs in release builds</li>
+<li>WebSocket connections to <code>stream-glb.osl.com</code> also need SSL bypass for real-time data interception</li>
+</ul>
+<hr>
+<h2>Appendix: Command Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>openssl x509 -inform DER -in cacert.der -out cacert.pem</code></td>
+<td>Convert Burp cert to PEM</td>
+</tr>
+<tr>
+<td><code>openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1</code></td>
+<td>Get Android cert hash</td>
+</tr>
+<tr>
+<td><code>adb -s emulator-5554 root</code></td>
+<td>Get root ADB access</td>
+</tr>
+<tr>
+<td><code>adb -s emulator-5554 remount</code></td>
+<td>Remount /system as writable</td>
+</tr>
+<tr>
+<td><code>adb -s emulator-5554 push &lt;file&gt; &lt;path&gt;</code></td>
+<td>Copy file to device</td>
+</tr>
+<tr>
+<td><code>adb -s emulator-5554 disable-verity</code></td>
+<td>Disable dm-verity</td>
+</tr>
+<tr>
+<td><code>mount -t tmpfs tmpfs &lt;path&gt;</code></td>
+<td>Mount RAM filesystem overlay</td>
+</tr>
+<tr>
+<td><code>chcon &lt;context&gt; &lt;file&gt;</code></td>
+<td>Set SELinux context</td>
+</tr>
+<tr>
+<td><code>iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination 10.0.2.2:8080</code></td>
+<td>Redirect HTTPS to Burp</td>
+</tr>
+<tr>
+<td><code>am force-stop &lt;package&gt;</code></td>
+<td>Kill an app completely</td>
+</tr>
+<tr>
+<td><code>emulator -avd &lt;name&gt; -writable-system</code></td>
+<td>Launch emulator with writable /system</td>
+</tr>
+<tr>
+<td><code>ls -laZ &lt;file&gt;</code></td>
+<td>List file with SELinux context</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Report generated from a live penetration testing session</em>
+<em>Date: May 5, 2026</em>
+<em>Tester Environment: macOS (Apple M4), Android 11 ARM64 Emulator</em></p>
+    </article>
+    <div class="post-foot"><span>Manik Das · 🔒 generated from markdown</span><a href="../convert.html">✎ md → html</a></div>
+  </main>
+</body>
+</html>
