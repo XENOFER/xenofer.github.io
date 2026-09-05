@@ -87,6 +87,11 @@ const CONFIG = {
 
   // blog — short posts can live in `body`. For long ones, set `link` instead.
   blog: [
+     // Android part will add here later
+     { title:"SSL Pinning Bypass Report — Flutter developed Mobile App (Android)", date:"2026",
+      summary:"one-line teaser shown on the card",
+      link:"blog/ssl-pinning-bypass-report-osl-mobile-app-android.html" },
+     // later add here new things
     { title:"Breaking JWTs: alg:none and weak-secret attacks", date:"draft",
       summary:"How the classic JWT attacks actually work, demonstrated with the in-browser engine from CipherToken.",
       body:"Placeholder seed — you already built the demos for this in JWT_token_web, so the writeup is half-done. Walk through alg:none forgery and dictionary attacks on weak HMAC secrets. Or set a `link` to a published version.",
