@@ -118,7 +118,7 @@ const CONFIG = {
   // certifications / courses. status: done | prog
   certs: [
     { name:"CNPen", org:"Secops", status:"prog", note:"targeting — in progress" },
-    { name:"eJPT", org:"INE Security", status:"done", note:"targeting — Completed" },
+    { name:"eJPT", org:"INE Security", status:"done", note:"targeting — Completed",link:"https://certs.ine.com/5f7e812e-9035-4f44-80f0-6de56e378adc" },
     { name:"Intro to Cyber Security", org:"TryHackMe", status:"done", note:"foundational path" }
   ]
 };
