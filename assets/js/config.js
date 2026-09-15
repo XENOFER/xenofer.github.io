@@ -11,10 +11,10 @@ const CONFIG = {
 
   role:    "Offensive Security Researcher",
   tagline: "I break things to understand them.",
-  blurb:   "I am Offensive security researcher with 1.8 years of hands-on penetration testing experience across web, network, mobile (Android), and AI/LLM targets. Currently performing web application security testing on a red team at TCS. eJPT certified and an active CTF player, with a strong foundation in vulnerability assessment, Linux, and digital forensics.",
+  blurb:   "I am Offensive security researcher with 2 years of hands-on penetration testing experience across web, network, mobile (Android), and AI/LLM targets. Currently performing web application security testing on a red team at TCS. eJPT certified and an active CTF player, with a strong foundation in vulnerability assessment, Linux, and digital forensics.",
   location:"India // remote-friendly",        // EDIT ME
   status:  "Open to Work",       // EDIT ME
-  email:   "manik07012003@gmail.com",
+  email:   "manik.das2003@icloud.com",
 
   // EDIT ME — links. Use "" to hide a row. github is already correct.
   links: {
